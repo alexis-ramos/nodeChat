@@ -36,7 +36,7 @@ const handleConn = () => {
 
 handleConn();
 
-const list = (table, id) => {
+const list = (table) => {
   return new Promise((resolve, reject) => {
     connection.query(`select * from ${table}`, (err, data) => {
       if (err) {
@@ -47,6 +47,68 @@ const list = (table, id) => {
   });
 };
 
+const get = (table, id) => {
+  console.log(id);
+  return new Promise((resolve, reject) => {
+    connection.query(`select * from ${table} where id = ${id}`, (err, data) => {
+      if (err) {
+        return reject(err);
+      }
+      console.log(data);
+      resolve(data);
+    });
+  });
+};
+
+const insert = (table, data) => {
+  return new Promise((resolve, reject) => {
+    connection.query(`insert into ${table} set ?`, data, (err, result) => {
+      if (err) {
+        return reject(err);
+      }
+      resolve(result);
+    });
+  });
+};
+
+const update = (table, data) => {
+  return new Promise((resolve, reject) => {
+    connection.query(
+      `update ${table} set ? where id=?`,
+      [data, data.id],
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(result);
+      }
+    );
+  });
+};
+
+const upsert = (table, data) => {
+  if (data && data.id) {
+    return update(table, data);
+  } else {
+    return insert(table, data);
+  }
+};
+
+const query = (table, query) => {
+  return new Promise((resolve, reject) => {
+    connection.query(`select * from ${table} where ?`, query, (err, res) => {
+      if (err) {
+        return reject(err);
+      } else {
+        resolve(res[0] || null);
+      }
+    });
+  });
+};
+
 module.exports = {
   list,
+  get,
+  upsert,
+  query,
 };

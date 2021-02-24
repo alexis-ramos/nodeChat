@@ -12,7 +12,7 @@ module.exports = function (injectedStore) {
     return store.list(TABLA);
   };
   const get = (id) => {
-    return store.list(TABLA, id);
+    return store.get(TABLA, id);
   };
 
   const upsert = async (body) => {
@@ -20,6 +20,7 @@ module.exports = function (injectedStore) {
     const user = {
       name: body.name,
       username: body.username,
+      password: body.password,
     };
 
     if (body.id) {
