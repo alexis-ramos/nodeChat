@@ -48,13 +48,12 @@ const list = (table) => {
 };
 
 const get = (table, id) => {
-  console.log(id);
   return new Promise((resolve, reject) => {
     connection.query(`select * from ${table} where id = ${id}`, (err, data) => {
       if (err) {
         return reject(err);
       }
-      console.log(data);
+
       resolve(data);
     });
   });
@@ -62,12 +61,16 @@ const get = (table, id) => {
 
 const insert = (table, data) => {
   return new Promise((resolve, reject) => {
-    connection.query(`insert into ${table} set ?`, data, (err, result) => {
-      if (err) {
-        return reject(err);
+    connection.query(
+      `insert into ${table} set ? ON DUPLICATE KEY UPDATE ?`,
+      [data, data],
+      (err, result) => {
+        if (err) {
+          return reject(err);
+        }
+        resolve(result);
       }
-      resolve(result);
-    });
+    );
   });
 };
 

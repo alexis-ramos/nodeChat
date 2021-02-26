@@ -13,7 +13,7 @@ module.exports = function (injectedStore) {
     return bcrypt.compare(password, data.password).then((sonIguales) => {
       if (sonIguales === true) {
         //se genera el token
-        return auth.sign(data);
+        return auth.sign(JSON.parse(JSON.stringify(data)));
       } else {
         //se genera el error
         throw new Error('informacion invalida');

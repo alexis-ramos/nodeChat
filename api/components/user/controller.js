@@ -16,17 +16,13 @@ module.exports = function (injectedStore) {
   };
 
   const upsert = async (body) => {
-    console.log(body);
     const user = {
       name: body.name,
       username: body.username,
-      password: body.password,
     };
 
     if (body.id) {
       user.id = body.id;
-    } else {
-      user.id = naoid();
     }
 
     if (body.password || body.username) {

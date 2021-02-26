@@ -9,15 +9,14 @@ const sign = (data) => {
 };
 
 const verify = (token) => {
-  console.log('el token', token);
   return jwt.verify(token, secret);
 };
 
 const check = {
   own: function (req, owner) {
     const decoded = decodeHeader(req);
-    console.log(decoded);
     //comprobar si es o no propio
+    const ownerString = toString(owner);
     if (decoded.id !== owner) {
       throw error('No puedes hacer esto', 401);
       //throw new Error('No puedes editar esto');
