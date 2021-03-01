@@ -5,9 +5,12 @@ module.exports = function checkAuth(action) {
     switch (action) {
       case 'update':
         const owner = req.body.id;
-        console.log(owner);
         auth.check.own(req, owner);
-        console.log('pasa el check');
+        next();
+        break;
+      case 'follow':
+        console.log('entra al caso');
+        auth.check.logged(req);
         next();
         break;
 
