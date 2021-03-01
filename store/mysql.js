@@ -97,15 +97,26 @@ const upsert = (table, data) => {
   }
 };
 
-const query = (table, query) => {
+const query = (table, query, join) => {
+  let joinQuery = '';
+  if (join) {
+    const key = Object.keys(join)[0];
+    const val = join[key];
+    joinQuery = `join ${key} on ${table}.${val} = ${key}.id`;
+  }
+
   return new Promise((resolve, reject) => {
-    connection.query(`select * from ${table} where ?`, query, (err, res) => {
-      if (err) {
-        return reject(err);
-      } else {
-        resolve(res[0] || null);
+    connection.query(
+      `select * from ${table} ${joinQuery} where ?`,
+      query,
+      (err, res) => {
+        if (err) {
+          return reject(err);
+        } else {
+          resolve(res[0] || null);
+        }
       }
-    });
+    );
   });
 };
 
