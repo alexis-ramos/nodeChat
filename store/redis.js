@@ -15,7 +15,7 @@ async function list(table) {
         return reject(err);
       }
       if (data) {
-        res = JSON.stringify(data);
+        res = JSON.parse(data);
       }
       resolve(res);
     });
@@ -31,7 +31,7 @@ async function upsert(table, data) {
   if (data && data.id) {
     key = `${key}_${data.id}`;
   }
-  client.setex(key, 10, JSON.stringify(data));
+  client.setex(key, 10, JSON.parse(data));
   return true;
 }
 
