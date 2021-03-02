@@ -3,7 +3,7 @@ const config = require('../config.js');
 const app = express();
 const swaggerUi = require('swagger-ui-express');
 const user = require('./components/user/network');
-const post = require('./components/post/network');
+const post = require('../post/components/post/network');
 const auth = require('./components/auth/network');
 const errors = require('../network/errors.js');
 
